@@ -1,11 +1,24 @@
+import React from "react";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession, signIn, signOut } from "next-auth/client";
+import Seo from "../components/seo";
+import Articles from "../components/articles";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import { fetchAPI } from "../lib/api";
 
-const IndexPage = ({ session }: { session: Session }) => {
+const IndexPage = ({
+  session,
+  articles,
+  categories,
+  homepage,
+}: {
+  session: Session;
+  articles: any;
+  categories: any;
+  homepage: any;
+}) => {
   const signInButtonNode = () => {
     if (session) {
       return false;
@@ -44,6 +57,13 @@ const IndexPage = ({ session }: { session: Session }) => {
             Sign Out
           </button>
         </Link>
+        <Seo seo={homepage.seo} />
+        <div className="uk-section">
+          <div className="uk-container uk-container-large">
+            <h1>{homepage.hero.title}</h1>
+            <Articles articles={articles} />
+          </div>
+        </div>
       </div>
     );
   };
@@ -73,6 +93,20 @@ const IndexPage = ({ session }: { session: Session }) => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  // Run API calls in parallel
+  const [articles, categories, homepage] = await Promise.all([
+    fetchAPI("/articles"),
+    fetchAPI("/categories"),
+    fetchAPI("/homepage"),
+  ]);
+
+  return {
+    props: { articles, categories, homepage },
+    revalidate: 1,
+  };
+}
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
