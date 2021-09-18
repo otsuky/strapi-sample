@@ -1,7 +1,8 @@
-import NextAuth from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import Providers from "next-auth/providers";
 
-const options = {
+const options: NextAuthOptions = {
   providers: [
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -22,7 +23,7 @@ const options = {
       const isSignIn = user ? true : false;
       if (isSignIn) {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/${account.provider}/callback?access_token=${account?.accessToken}`
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/${account?.provider}/callback?access_token=${account?.accessToken}`
         );
         const data = await response.json();
         token.jwt = data.jwt;
@@ -33,7 +34,7 @@ const options = {
   },
 };
 
-const Auth = (req, res) =>
+const Auth = (req: NextApiRequest, res: NextApiResponse) =>
   NextAuth(req, res, options);
 
 export default Auth;
