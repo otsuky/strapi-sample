@@ -5,17 +5,29 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format": "prettier --write src",
+    "lint": "eslint src/ --ext ts --ext tsx --ext js"
   },
   "dependencies": {
+    "moment": "2.29.1",
     "next": "11.1.2",
-    "next-auth": "^3.29.0",
-    "pg": "^8.7.1",
+    "next-auth": "3.29.0",
+    "pg": "8.7.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-markdown": "7.0.1",
+    "react-moment": "1.1.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.2"
+    "@types/react": "17.0.21",
+    "@typescript-eslint/eslint-plugin": "4.31.1",
+    "@typescript-eslint/parser": "4.31.1",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.24.2",
+    "prettier": "2.4.1",
+    "typescript": "4.4.3"
   }
 }
